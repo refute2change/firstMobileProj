@@ -1,54 +1,56 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useRef } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import Button, { DeleteButton } from '../components/Button';
+import MyInput, { MyInputRef } from '../components/MyInput';
 
-const MyInput = () => {
-  const [text, setText] = useState('');
-
-  const insertChar = (c = 'A') => setText(prev => prev + c);
+// 4. Main component demonstrating targeting specific instances
+export default function MyKeyboard() {
+  // Create unique refs for two separate instances of MyInput
+  const inputInstanceA = useRef<MyInputRef>(null);
+  const inputInstanceB = useRef<MyInputRef>(null);
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        onChangeText={setText} // Updates state on every keystroke
-        value={text} // Binds the input value to state
-        placeholder="Type here..."
-      />
-      <Button insertChar={insertChar} char="A" />
-      <Button insertChar={insertChar} char="B" />
-      <Button insertChar={insertChar} char="C" />
+    <View style={styles.screen}>
+      
+      {/* --- INSTANCE A SECTION --- */}
+      <Text style={styles.sectionTitle}>Input Instance A</Text>
+      <MyInput ref={inputInstanceA} />
+      
+      <View style={styles.keyboardRow}>
+        <Button char="1" inputTarget={inputInstanceA} />
+        <Button char="2" inputTarget={inputInstanceA} />
+        <Button char="3" inputTarget={inputInstanceA} />
+      </View>
+      <View style={styles.keyboardRow}>
+        <Button char="4" inputTarget={inputInstanceA} />
+        <Button char="5" inputTarget={inputInstanceA} />
+        <Button char="6" inputTarget={inputInstanceA} />
+      </View>
+      <View style={styles.keyboardRow}>
+        <Button char="7" inputTarget={inputInstanceA} />
+        <Button char="8" inputTarget={inputInstanceA} />
+        <Button char="9" inputTarget={inputInstanceA} />
+      </View>
+      <View style={styles.keyboardRow}>
+        <Button char="0" inputTarget={inputInstanceA} />
+        <DeleteButton inputTarget={inputInstanceA} />
+      </View>
+      
     </View>
   );
-};
-
-const Button = ({ insertChar, char = 'A' }: { insertChar: (c: string) => void; char?: string }) => {
-  return (
-    <TouchableOpacity style={styles.button} onPress={() => insertChar(char)}>
-      <Text style={styles.buttonText}>{char}</Text>
-    </TouchableOpacity>
-  );
-};
-
-export default MyInput;
+}
 
 const styles = StyleSheet.create({
-  container: { padding: 20 },
-  input: {
-    height: 40,
-    borderWidth: 1,
-    padding: 10,
-    borderColor: '#ccc',
-    borderRadius: 5,
+  screen: { flex: 1, padding: 20, justifyContent: 'center' },
+  sectionTitle: { fontSize: 18, fontWeight: 'bold', marginTop: 10 },
+  keyboardRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: 5,
   },
-  button: {
-    backgroundColor: '#007AFF',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    textAlign: 'center',
+  separator: {
+    height: 2,
+    backgroundColor: '#eee',
+    marginVertical: 25,
   },
 });
