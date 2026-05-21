@@ -1,11 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-
-// 1. Define the interface for what a "MyInput Instance" can do
-export interface MyInputRef {
-  insertChar: (c: string) => void;
-  deleteChar: () => void;
-}
+import { MyInputRef } from './MyInput';
 
 interface ButtonProps {
   char: string;
@@ -39,7 +34,19 @@ const DeleteButton = ({ inputTarget }: { inputTarget: React.RefObject<MyInputRef
   );
 }
 
-export { DeleteButton };
+const CalculateButton = ({ inputTarget }: { inputTarget: React.RefObject<MyInputRef | null> }) => {
+  return (
+    <TouchableOpacity style={[styles.button, { backgroundColor: '#34C759' }]} onPress={() => {
+      // This is where you would implement the logic to evaluate the expression in MyInput
+      // For demonstration, we'll just insert an "=" character
+      inputTarget.current?.clearInput(); // Clear the input for demonstration
+    }}>
+      <Text style={styles.buttonText}>=</Text>
+    </TouchableOpacity>
+  );
+}
+
+export { CalculateButton, DeleteButton };
 export default Button;
 
 const styles = StyleSheet.create({
